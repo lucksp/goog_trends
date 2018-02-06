@@ -5,9 +5,10 @@ const port = process.env.PORT || 3000;
 
 module.exports = {
   // config goes here
-  entry: "./src/scripts/index.js",
+  entry: ["react-hot-loader/patch", "./src/scripts/index.js"],
   output: {
-    filename: "bundle.[hash].js"
+    filename: "bundle.[hash].js",
+    publicPath: "/"
   },
   devtool: "inline-source-map",
   module: {
@@ -36,6 +37,9 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.NamedModulesPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin({
       template: "public/index.html"
       //   favicon: "public/favicon.ico"
@@ -45,6 +49,7 @@ module.exports = {
     // host: "localhost",
     port: port,
     historyApiFallback: true,
-    open: true
+    open: true,
+    hot: true
   }
 };
