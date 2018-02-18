@@ -7,12 +7,13 @@ module.exports = {
     // vendor: ["add here"],
     app: [
       "react-hot-loader/patch",
-      "webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr",
+      "webpack-hot-middleware/client",
       "./src/scripts/index.js"
     ]
   },
   output: {
     filename: "[name].[hash].js",
+    path: __dirname,
     publicPath: "/"
   },
   devtool: "inline-source-map",
@@ -52,8 +53,9 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.NamedModulesPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.NamedModulesPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin({
       template: "public/index.html",
