@@ -23,9 +23,9 @@ if (!process.env.NODE_ENV !== "production") {
   );
 }
 
-// app.get("/", function(req, res) {
-//   res.sendFile(__dirname + "/index.html");
-// });
+app.get("/", function(req, res) {
+  res.sendFile(__dirname + "/index.html");
+});
 
 app.get("/api/data", (req, res) => {
   res.send("hi from server"); // replace me with real data
