@@ -66,13 +66,5 @@ module.exports = {
     //   name: ["vendor"],
     //   minChunks: Infinity
     // })
-  ],
-  devServer: {
-    historyApiFallback: true,
-    hot: true,
-    open: true,
-    inline: true,
-    host: "localhost", // Defaults to `localhost`
-    port: 3000
-  }
+  ]
 };
