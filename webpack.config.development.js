@@ -2,15 +2,18 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-const port = process.env.PORT || 3000;
-
 module.exports = {
   entry: {
     // vendor: ["add here"],
-    app: ["react-hot-loader/patch", "./src/scripts/index.js"]
+    app: [
+      "react-hot-loader/patch",
+      "webpack-hot-middleware/client",
+      "./src/scripts/index.js"
+    ]
   },
   output: {
     filename: "[name].[hash].js",
+    path: __dirname,
     publicPath: "/"
   },
   devtool: "inline-source-map",
@@ -50,23 +53,18 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.NamedModulesPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.NamedModulesPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin({
-      template: "public/index.html"
-      // favicon: "public/favicon.ico"
+      template: "public/index.html",
+      favicon: "public/assets/img/favicon.ico"
     })
+    // insert chunks here, if you have any
     // new webpack.optimize.CommonsChunkPlugin({
     //   name: ["vendor"],
     //   minChunks: Infinity
     // })
-  ],
-  devServer: {
-    host: "localhost",
-    port: port,
-    historyApiFallback: true,
-    open: true,
-    hot: true
-  }
+  ]
 };
