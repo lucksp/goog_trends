@@ -1,6 +1,7 @@
 import React from "react";
 
-const PageLink = () => {
+const PageLink = props => {
+  console.log(props);
   return (
     <div>
       <p>This page was loaded asynch!</p>

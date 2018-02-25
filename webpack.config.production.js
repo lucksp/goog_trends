@@ -10,7 +10,7 @@ module.exports = {
     app: "./src/scripts/index.js"
   },
   output: {
-    filename: "static/[name].[hash].js",
+    filename: "static/[name]-bundle.js",
     path: path.resolve(__dirname, "dist"),
 
     publicPath: "/"
