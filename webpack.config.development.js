@@ -12,7 +12,7 @@ module.exports = {
     ]
   },
   output: {
-    filename: "[name].[hash].js",
+    filename: "[name]-bundle.js",
     path: __dirname,
     publicPath: "/"
   },
