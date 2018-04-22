@@ -3,8 +3,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
+  mode: "development",
   entry: {
-    // vendor: ["add here"],
     app: [
       "react-hot-loader/patch",
       "webpack-hot-middleware/client",
@@ -61,10 +61,16 @@ module.exports = {
       template: "public/index.html",
       favicon: "public/assets/img/favicon.ico"
     })
-    // insert chunks here, if you have any
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name: ["vendor"],
-    //   minChunks: Infinity
-    // })
-  ]
+  ],
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendors-bundle",
+          chunks: "all"
+        }
+      }
+    }
+  }
 };
