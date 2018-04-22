@@ -4,21 +4,23 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
+const extractSass = new ExtractTextPlugin({
+  filename: "css/style.css"
+});
+
 module.exports = {
+  mode: "production",
   entry: {
-    // vendor: ['add here'],
     app: "./src/scripts/index.js"
   },
   output: {
-    filename: "static/[name]-bundle.js",
+    filename: "[name]-bundle.js",
     path: path.resolve(__dirname, "dist"),
-
     publicPath: "/"
   },
 
   // Change to production source maps
   devtool: "source-map",
-
   module: {
     rules: [
       {
@@ -27,36 +29,19 @@ module.exports = {
         use: ["babel-loader"]
       },
       {
-        test: /\.scss$/,
-        use: [
-          {
-            loader: "style-loader" // creates style nodes from JS strings
-          },
-          {
-            loader: "css-loader", // translates CSS into CommonJS
-            options: {
-              sourceMap: true
+        test: /\.(css|scss)$/,
+        use: extractSass.extract({
+          use: [
+            {
+              loader: "css-loader"
+            },
+            {
+              loader: "sass-loader"
             }
-          },
-          {
-            loader: "sass-loader", // compiles Sass to CSS
-            options: {
-              sourceMap: true
-            }
-          },
-          {
-            loader: "postcss-loader",
-            options: {
-              config: {
-                ctx: {
-                  autoprefixer: {
-                    browsers: "last 2 versions"
-                  }
-                }
-              }
-            }
-          }
-        ]
+          ],
+          // use style-loader in development
+          fallback: "style-loader"
+        })
       }
     ]
   },
@@ -66,6 +51,19 @@ module.exports = {
         NODE_ENV: JSON.stringify("production")
       }
     }),
+    new HtmlWebpackPlugin({
+      template: "public/index.html"
+      // favicon: "public/favicon.ico"
+    }),
+    new ExtractTextPlugin({
+      filename: "styles/styles.[contenthash].css",
+      allChunks: true
+    }),
+    extractSass,
+    new ExtractTextPlugin({
+      filename: "styles/styles.css",
+      allChunks: true
+    }),
     new UglifyJsPlugin({
       sourceMap: true,
       uglifyOptions: {
@@ -73,23 +71,17 @@ module.exports = {
           comments: false
         }
       }
-    }),
-    new HtmlWebpackPlugin({
-      template: "public/index.html"
-      // favicon: "public/favicon.ico"
-    }),
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name: ['vendor'],
-    //   minChunks: Infinity
-    // }),
-    new ExtractTextPlugin({
-      filename: "styles/styles.[contenthash].css",
-      allChunks: true
-    }),
-
-    new ExtractTextPlugin({
-      filename: "[name].[contenthash].css",
-      disable: process.env.NODE_ENV === "development"
     })
-  ]
+  ],
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendors-bundle",
+          chunks: "all"
+        }
+      }
+    }
+  }
 };
