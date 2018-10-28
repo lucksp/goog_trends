@@ -18,7 +18,7 @@
   ],
   "scripts": {
     "dev": "node server/server.js",
-    "build": "webpack -p --config webpack.config.production.js && cross-env NODE_ENV=production node server/server.js"
+    "build": "webpack --env.NODE_ENV=production --env.production cross-env -p --config webpack.config.production.js && NODE_ENV=production node server/server.js"
   },
   "dependencies": {
     "pm2": "^2.10.2",
