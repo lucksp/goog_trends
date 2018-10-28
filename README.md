@@ -23,12 +23,6 @@ Then...
 
 `yarn dev`
 
-`yarn install`
-
-## Run Dev
-
-`yarn dev`
-
 ## Run Prod
 
 `yarn build`
