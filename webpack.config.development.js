@@ -1,54 +1,18 @@
 const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const merge = require("webpack-merge");
+const baseConfig = require("./webpack.config.base");
 
-module.exports = {
+module.exports = merge(baseConfig, {
   mode: "development",
   entry: {
-    app: [
-      "react-hot-loader/patch",
-      "webpack-hot-middleware/client",
-      "./src/scripts/index.js"
-    ]
+    app: ["webpack-hot-middleware/client"]
   },
   output: {
-    filename: "[name]-bundle.js",
-    path: __dirname,
-    publicPath: "/"
+    path: __dirname
   },
   devtool: "inline-source-map",
   module: {
     rules: [
-      {
-        test: /\.(js)$/,
-        exclude: /node_modules/,
-        use: ["babel-loader"]
-      },
-      {
-        test: /\.(scss|css)$/,
-        use: [
-          {
-            loader: "style-loader" // creates style nodes from JS strings
-          },
-          {
-            loader: "css-loader" // translates CSS into CommonJS
-          },
-          {
-            loader: "sass-loader" // compiles Sass to CSS
-          },
-          {
-            loader: "postcss-loader",
-            options: {
-              config: {
-                ctx: {
-                  autoprefixer: {
-                    browsers: "last 2 versions"
-                  }
-                }
-              }
-            }
-          }
-        ]
-      },
       {
         test: /\.(png|jpg|gif)$/i,
         use: [
@@ -65,23 +29,13 @@ module.exports = {
   },
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    new HtmlWebpackPlugin({
-      template: "public/index.html",
-      favicon: "public/assets/img/favicon.ico"
-    })
-  ],
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        commons: {
-          test: /[\\/]node_modules[\\/]/,
-          name: "vendors-bundle",
-          chunks: "all"
-        }
+    new webpack.DefinePlugin({
+      "process.env": {
+        NODE_ENV: '"dev"'
       }
-    }
-  }
-};
+    })
+  ]
+});
