@@ -22,16 +22,6 @@ module.exports = merge(baseConfig, {
         exclude: /node_modules/,
         use: ["babel-loader"]
       },
-      // {
-      //   test: /\.(scss|css)$/,
-      //   use: [
-      //     "style-loader",
-      //     MiniCssExtractPlugin.loader,
-      //     "css-loader",
-      //     "sass-loader"
-      //   ],
-      //   include: path.join(__dirname, "./src/styles/*/*.scss")
-      // },
       {
         test: /\.(jpg|png|gif|svg|pdf)$/,
         use: [
@@ -53,7 +43,9 @@ module.exports = merge(baseConfig, {
     }),
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      title: "Production"
+      title: "Production",
+      template: "public/index.html",
+      favicon: "public/assets/img/favicon.ico"
     }),
     new MiniCssExtractPlugin(),
     new OptimizeCssAssetsPlugin({
