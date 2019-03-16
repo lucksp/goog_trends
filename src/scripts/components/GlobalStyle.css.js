@@ -9,6 +9,8 @@ body{
     width: 100vw;
     max-width: 100vw;
     margin: 0;
+    font-size: 22px;
+    color: #FFF;
 }
 #root {
     height: inherit;

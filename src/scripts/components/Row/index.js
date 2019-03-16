@@ -10,7 +10,7 @@ const Row = props => {
   return (
     <StyledRow className="row" rowHeight={props.rowHeight}>
       {data.map((item, i) => (
-        <Card text={item} key={i} cardWith={props.data.length} />
+        <Card text={item} key={i} cardWith={props.data.length} colorIndex={i} />
       ))}
     </StyledRow>
   );
