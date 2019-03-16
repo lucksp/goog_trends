@@ -6,4 +6,5 @@ export default styled.div`
   align-items: center;
   text-transform: capitalize;
   background-color: #${props => props.color};
+  padding: 16px;
 `;
