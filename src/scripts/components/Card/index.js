@@ -1,27 +1,21 @@
-import React, { Component } from "react";
+import React from "react";
 
 //styled
 import StyledCard from "./Card.css";
 import TypingText from "../TypingText";
 
-const colors = ["83FF09", "E8BB0C", "FF6100", "E80C6D", "630DFF"];
-
-const pickRandom = () => colors[Math.floor(Math.random() * colors.length)];
-
-class Card extends Component {
-  render() {
-    return (
-      <StyledCard
-        cardWith={this.props.cardWith}
-        className="card"
-        color={pickRandom()}
-      >
-        <div className="card-content">
-          <TypingText fullText={this.props.text.toLowerCase()} />
-        </div>
-      </StyledCard>
-    );
-  }
-}
+const Card = ({ cardWidth, textId, item, getNewWord }) => {
+  return (
+    <StyledCard cardWidth={cardWidth} className="card" color={item.color}>
+      <div className="content">
+        <TypingText
+          textId={textId}
+          fullText={item.text}
+          getNewWord={getNewWord}
+        />
+      </div>
+    </StyledCard>
+  );
+};
 
 export default Card;

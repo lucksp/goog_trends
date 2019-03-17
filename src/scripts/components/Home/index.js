@@ -5,6 +5,12 @@ import PropTypes from "prop-types";
 import StyledHome from "./Home.css";
 import Row from "../Row";
 
+const colorsArray = ["83FF09", "E8BB0C", "FF6100", "E80C6D", "630DFF"];
+
+const pickRandom = () =>
+  colorsArray[Math.floor(Math.random() * colorsArray.length)];
+
+// split original data into usable arrays
 const chunkArray = (array, size) => {
   const splitArr = array.splice(0, size * size);
   const remainingData = array;
@@ -12,7 +18,14 @@ const chunkArray = (array, size) => {
 
   function splitIntoChunks() {
     for (let i = 0; i < splitArr.length; i += size) {
-      dataToRender.push(splitArr.slice(i, i + size));
+      let tempArr = splitArr.slice(i, i + size).map(item => {
+        return {
+          text: item,
+          color: pickRandom(colorsArray)
+        };
+      });
+
+      dataToRender.push(tempArr);
     }
   }
 
@@ -27,8 +40,9 @@ class Home extends Component {
   };
 
   static defaultProps = {
-    gridSize: 5
+    gridSize: 2
   };
+
   state = {
     dataToRender: [],
     remainingData: []
@@ -46,12 +60,36 @@ class Home extends Component {
     });
   }
 
-  //   componentDidUpdate(prevProps, prevState) {
-  //   }
+  getNewWord = wordId => {
+    const splitWordId = wordId.split("-");
+    const rowIndex = {
+      row: splitWordId[0],
+      index: splitWordId[1]
+    };
+    let newState = { ...this.state };
+    let newWordIndex = Math.floor(
+      Math.random() * this.state.remainingData.length
+    );
+
+    const newWordObj = {
+      text: this.state.remainingData[newWordIndex],
+      color: pickRandom(colorsArray)
+    };
+    newState.dataToRender[rowIndex.row][rowIndex.index] = newWordObj;
+    newState.remainingData.splice(newWordIndex, 1);
+
+    this.setState(newState);
+  };
 
   render() {
     const splitRows = this.state.dataToRender.map((row, i) => (
-      <Row data={row} key={i} rowHeight={this.props.gridSize} />
+      <Row
+        data={row}
+        rowNumber={i}
+        key={i}
+        rowHeight={this.props.gridSize}
+        getNewWord={this.getNewWord}
+      />
     ));
     return <StyledHome>{splitRows}</StyledHome>;
   }

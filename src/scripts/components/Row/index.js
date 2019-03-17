@@ -5,19 +5,27 @@ import PropTypes from "prop-types";
 import StyledRow from "./Row.css";
 import Card from "../Card";
 
-const Row = props => {
-  const data = props.data;
+const Row = ({ rowHeight, data, rowNumber, getNewWord }) => {
   return (
-    <StyledRow className="row" rowHeight={props.rowHeight}>
+    <StyledRow className="row" rowHeight={rowHeight}>
       {data.map((item, i) => (
-        <Card text={item} key={i} cardWith={props.data.length} colorIndex={i} />
+        <Card
+          textId={`${rowNumber}-${i}`}
+          item={item}
+          key={i}
+          cardWidth={data.length}
+          getNewWord={getNewWord}
+        />
       ))}
+      }
     </StyledRow>
   );
 };
-
-Row.defaultProps = {
-  data: PropTypes.array.isRequired
+Row.propType = {
+  data: PropTypes.array.isRequired,
+  getNewWord: PropTypes.func.isRequired,
+  rowHeight: PropTypes.number.isRequired,
+  rowNumber: PropTypes.number.isRequired
 };
 
 export default Row;

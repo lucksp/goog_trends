@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
-let typingTimeout = () => {};
+// styled
+import StyledTypingText from "./TypingText.css";
 
 class TypingText extends Component {
   static defaultProps = {
@@ -9,32 +10,49 @@ class TypingText extends Component {
 
   state = {
     text: "",
-    typingSpeed: 250
+    isUpdating: false
   };
 
+  timer = null;
+
   componentDidMount() {
-    this.handleTyping();
+    this.setState({ fullText: this.props.fullText }, () => {
+      this.timer = setInterval(() => this.handleTyping(), 250);
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.fullText !== prevProps.fullText) {
+      this.setState({ fullText: this.props.fullText, text: "" }, () => {
+        this.timer = setInterval(() => this.handleTyping(), 250);
+      });
+    }
+    if (this.state.text === this.props.fullText) {
+      clearInterval(this.timer);
+      this.prepareNewWord();
+    }
   }
 
   handleTyping = () => {
     const { fullText } = this.props;
     const { text } = this.state;
 
-    this.setState({ text: fullText.substring(0, text.length + 1) }, () => {
-      if (this.state.text === fullText) {
-        console.log("finished");
-        return;
-      }
-      setTimeout(this.handleTyping, this.state.typingSpeed);
+    this.setState({
+      text: fullText.substring(0, text.length + 1),
+      isUpdating: true
     });
+  };
+
+  prepareNewWord = () => {
+    setTimeout(() => this.props.getNewWord(this.props.textId), 2000);
   };
 
   render() {
     return (
-      <React.Fragment>
-        <div>{this.state.text}</div>
+      <StyledTypingText isUpdating={this.state.isUpdating}>
+        <span>{this.state.text}</span>
         <span id="cursor" />
-      </React.Fragment>
+      </StyledTypingText>
     );
   }
 }
