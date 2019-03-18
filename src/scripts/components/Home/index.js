@@ -40,7 +40,7 @@ class Home extends Component {
   };
 
   static defaultProps = {
-    gridSize: 2
+    gridSize: 5
   };
 
   state = {
@@ -66,19 +66,26 @@ class Home extends Component {
       row: splitWordId[0],
       index: splitWordId[1]
     };
-    let newState = { ...this.state };
-    let newWordIndex = Math.floor(
-      Math.random() * this.state.remainingData.length
-    );
+    // take most current state to get next available word
+    this.setState(prevState => {
+      if (!prevState.remainingData.length) return prevState;
 
-    const newWordObj = {
-      text: this.state.remainingData[newWordIndex],
-      color: pickRandom(colorsArray)
-    };
-    newState.dataToRender[rowIndex.row][rowIndex.index] = newWordObj;
-    newState.remainingData.splice(newWordIndex, 1);
+      let newState = { ...prevState };
 
-    this.setState(newState);
+      const newWordObj = {
+        text: newState.remainingData.splice(0, 1).toString(),
+        color: pickRandom(colorsArray)
+      };
+
+      newState.dataToRender[rowIndex.row][rowIndex.index] = { ...newWordObj };
+
+      return {
+        ...prevState,
+        ...prevState.dataToRender,
+        dataToRender: [...newState.dataToRender],
+        remainingData: newState.remainingData
+      };
+    });
   };
 
   render() {

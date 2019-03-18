@@ -12,39 +12,42 @@ class TypingText extends Component {
     text: "",
     isUpdating: false
   };
-
   timer = null;
-
   componentDidMount() {
-    this.setState({ fullText: this.props.fullText }, () => {
-      this.timer = setInterval(() => this.handleTyping(), 250);
-    });
+    this.timer = setInterval(() => this.typeWord(), 250);
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.fullText !== prevProps.fullText) {
-      this.setState({ fullText: this.props.fullText, text: "" }, () => {
-        this.timer = setInterval(() => this.handleTyping(), 250);
-      });
-    }
-    if (this.state.text === this.props.fullText) {
-      clearInterval(this.timer);
-      this.prepareNewWord();
+    if (this.state.isUpdating && this.state.text === this.props.fullText) {
+      // typing state is updated and it matches full word
+      return this.prepareNewWord();
     }
   }
 
-  handleTyping = () => {
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
+  typeWord = newWord => {
     const { fullText } = this.props;
     const { text } = this.state;
 
-    this.setState({
-      text: fullText.substring(0, text.length + 1),
-      isUpdating: true
-    });
+    if (text !== fullText) {
+      this.setState(prevState => {
+        return {
+          text: newWord ? "" : fullText.substring(0, prevState.text.length + 1),
+          isUpdating: true
+        };
+      });
+    }
   };
 
   prepareNewWord = () => {
-    setTimeout(() => this.props.getNewWord(this.props.textId), 2000);
+    clearInterval(this.timer);
+    this.setState({ isUpdating: false });
+    setTimeout(() => {
+      this.props.getNewWord(this.props.textId);
+    }, 2000);
   };
 
   render() {

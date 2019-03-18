@@ -12,7 +12,7 @@ const Row = ({ rowHeight, data, rowNumber, getNewWord }) => {
         <Card
           textId={`${rowNumber}-${i}`}
           item={item}
-          key={i}
+          key={`${i}-${item.text}`}
           cardWidth={data.length}
           getNewWord={getNewWord}
         />
