@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 // styled
 import StyledTypingText from "./TypingText.css";
@@ -6,6 +7,11 @@ import StyledTypingText from "./TypingText.css";
 class TypingText extends Component {
   static defaultProps = {
     fullText: ""
+  };
+
+  static propTypes = {
+    getNewWord: PropTypes.func.isRequired,
+    fullText: PropTypes.string.isRequired
   };
 
   state = {
@@ -53,8 +59,10 @@ class TypingText extends Component {
   render() {
     return (
       <StyledTypingText isUpdating={this.state.isUpdating}>
-        <span>{this.state.text}</span>
-        <span id="cursor" />
+        <span className="typing-word">
+          {this.state.text}
+          <span className="cursor" />
+        </span>
       </StyledTypingText>
     );
   }

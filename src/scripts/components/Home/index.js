@@ -21,7 +21,8 @@ const chunkArray = (array, size) => {
       let tempArr = splitArr.slice(i, i + size).map(item => {
         return {
           text: item,
-          color: pickRandom(colorsArray)
+          color: pickRandom(colorsArray),
+          backupColor: pickRandom(colorsArray)
         };
       });
 

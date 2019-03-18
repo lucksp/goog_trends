@@ -17,7 +17,6 @@ const Row = ({ rowHeight, data, rowNumber, getNewWord }) => {
           getNewWord={getNewWord}
         />
       ))}
-      }
     </StyledRow>
   );
 };
