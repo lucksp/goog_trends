@@ -10,7 +10,7 @@ class TypingText extends Component {
   };
 
   static propTypes = {
-    getNewWord: PropTypes.func.isRequired,
+    setComplete: PropTypes.func.isRequired,
     fullText: PropTypes.string.isRequired
   };
 
@@ -51,9 +51,7 @@ class TypingText extends Component {
   prepareNewWord = () => {
     clearInterval(this.timer);
     this.setState({ isUpdating: false });
-    setTimeout(() => {
-      this.props.getNewWord(this.props.textId);
-    }, 2000);
+    this.props.setComplete(this.props.textId);
   };
 
   render() {

@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { pickRandom } from "../..";
 
 //styled
 import StyledHome from "./Home.css";
 import Row from "../Row";
 
 const colorsArray = ["83FF09", "E8BB0C", "FF6100", "E80C6D", "630DFF"];
-
-const pickRandom = () =>
-  colorsArray[Math.floor(Math.random() * colorsArray.length)];
 
 // split original data into usable arrays
 const chunkArray = (array, size) => {
@@ -75,7 +73,8 @@ class Home extends Component {
 
       const newWordObj = {
         text: newState.remainingData.splice(0, 1).toString(),
-        color: pickRandom(colorsArray)
+        backupColor: pickRandom(colorsArray),
+        color: newState.dataToRender[rowIndex.row][rowIndex.index].backupColor
       };
 
       newState.dataToRender[rowIndex.row][rowIndex.index] = { ...newWordObj };
