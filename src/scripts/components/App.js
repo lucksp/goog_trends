@@ -3,11 +3,13 @@ import React, { Component } from "react";
 //styled
 import Home from "./Home";
 import { GlobalStyle } from "./GlobalStyle.css";
+import GridSize from "./GridSize";
 
 class App extends Component {
   state = {
     data: [],
-    loading: true
+    loading: true,
+    gridSize: 5
   };
 
   async componentDidMount() {
@@ -18,6 +20,10 @@ class App extends Component {
     }
   }
 
+  handleSelectSize = gridSize => {
+    this.setState({ gridSize });
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -25,7 +31,13 @@ class App extends Component {
         {this.state.loading ? (
           <div>Loading data...</div>
         ) : (
-          <Home data={this.state.data} />
+          <React.Fragment>
+            <GridSize
+              handleClick={this.handleSelectSize}
+              size={this.state.gridSize}
+            />
+            <Home data={this.state.data} gridSize={this.state.gridSize} />
+          </React.Fragment>
         )}
       </React.Fragment>
     );

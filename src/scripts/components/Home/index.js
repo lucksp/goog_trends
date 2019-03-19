@@ -38,10 +38,6 @@ class Home extends Component {
     gridSize: PropTypes.number
   };
 
-  static defaultProps = {
-    gridSize: 5
-  };
-
   state = {
     dataToRender: [],
     remainingData: []
