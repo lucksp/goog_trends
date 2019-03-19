@@ -4,8 +4,6 @@ const baseConfig = require("./webpack.config.base");
 const webpack = require("webpack");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 module.exports = merge(baseConfig, {
   mode: "production",
@@ -46,12 +44,6 @@ module.exports = merge(baseConfig, {
       title: "Production",
       template: "public/index.html",
       favicon: "public/assets/img/favicon.ico"
-    }),
-    new MiniCssExtractPlugin(),
-    new OptimizeCssAssetsPlugin({
-      cssProcessorOptions: {
-        safe: true
-      }
     })
   ]
 });
