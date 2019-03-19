@@ -17,8 +17,7 @@
     "node"
   ],
   "scripts": {
-    "dev": "NODE_ENV=dev node server/server.js",
-    "build": "cross-env webpack --config webpack.config.production.js && NODE_ENV=production node server/server.js"
+    "dev": "NODE_ENV=dev node server/server.js"
   },
   "dependencies": {
     "react": "^16.8.4",
